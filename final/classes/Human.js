@@ -1,31 +1,13 @@
-let parent3 = require('./LivingCreature');
-module.exports = class Human extends parent3{
+let LivingCreature = require('./LivingCreature');
+module.exports = class Human extends LivingCreature{
 
     constructor(x, y, index) {
 		super(x, y, index);
-		this.energy = 8;
+		this.energy = 12;
 	}
 
-    updateCoordinates() {
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
-
-    chooseCells(characterId) {
-        this.updateCoordinates();
-        return super.chooseCells;
-    }
-
 	multiplyFunction() {
-        let targetCells = this.chooseCells(0);
+        let targetCells = super.chooseCells(0);
         let newCell = targetCells[Math.floor(Math.random() * targetCells.length)];
         if (this.multiply >= 14 && newCell) {
             let newX = newCell[0];
@@ -38,7 +20,7 @@ module.exports = class Human extends parent3{
     }
 
     move() {
-        let targetCells = this.chooseCells(0);
+        let targetCells = super.chooseCells(0);
         let newCell = random(targetCells);
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
@@ -55,8 +37,8 @@ module.exports = class Human extends parent3{
     }
 
     eat() {
-		let Cells = this.chooseCells(2);
-		let Cells1 = this.chooseCells(3);
+		let Cells = super.chooseCells(2);
+		let Cells1 = super.chooseCells(3);
         let targetCells = Cells.concat(Cells1);
         let newCell = random(targetCells);
         if (this.energy > 0 && newCell) {

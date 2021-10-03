@@ -4,51 +4,30 @@ module.exports = class Predator extends parent2{
 
     constructor(x, y, index) {
 		super(x, y, index);
-		this.energy = 8;
+		this.energy = 10;
 	}
 
-    updateCoordinates() {
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
-
-    chooseCells(characterId) {
-        this.updateCoordinates();
-        return super.chooseCells(characterId);
-    }
-
     multiplyFunction() {
-        let targetCells = this.chooseCells(0);
+        let targetCells = super.chooseCells(0);
         let newCell = targetCells[Math.floor(Math.random() * targetCells.length)];
         this.multiply++;
         if (this.multiply >= 10 && newCell) {
             let newX = newCell[0];
             let newY = newCell[1];
-            this.matrix[newY][newX] = this.id;
-            let newGrassEater = new Predator(newX, newY, this.id, this.matrix, this.objectsMatrix);
-            this.objectsMatrix[newY][newX] = newGrassEater;
+            matrix[newY][newX] = 3;
+            grassEaterArr.push(new Predator(newX, newY, 3));
             this.multiply = 0;
         }
     }
 
     move() {
-        let targetCells = this.chooseCells(0);
+        let targetCells = super.chooseCells(0);
         let newCell = targetCells[Math.floor(Math.random() * targetCells.length)];
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
             let newY = newCell[1];
-            this.matrix[newY][newX] = this.id;
-            this.matrix[this.y][this.x] = 0;
-            this.objectsMatrix[newY][newX] = this;
-            this.objectsMatrix[this.y][this.x] = null;
+            matrix[newY][newX] = matrix[this.y][this.x];
+            matrix[this.y][this.x] = 0;
             this.x = newX;
             this.y = newY;
             this.energy--;   
@@ -57,15 +36,18 @@ module.exports = class Predator extends parent2{
     }
 
     eat() {
-        let targetCells = this.chooseCells(2);
+        let targetCells = super.chooseCells(2);
         let newCell = targetCells[Math.floor(Math.random() * targetCells.length)];
         if (this.energy > 0 && newCell) {
             let newX = newCell[0];
             let newY = newCell[1];
-            this.matrix[newY][newX] = this.id;
-            this.matrix[this.y][this.x] = 0;
-            this.objectsMatrix[newY][newX] = this;
-            this.objectsMatrix[this.y][this.x] = null;
+            matrix[newY][newX] = matrix[this.y][this.x];
+            matrix[this.y][this.x] = 0;
+            for (var i in grassArr) {
+                if (grassEaterArr[i].x == newX && grassEaterArr[i].y == newY) {
+                    grassEaterArr.splice(i, 1);
+                }
+            }
             this.x = newX;
             this.y = newY;
             this.energy++;
@@ -78,8 +60,12 @@ module.exports = class Predator extends parent2{
 
     die() {
         if (this.energy <= 0) {
-            this.matrix[this.y][this.x] = 0;
-            this.objectsMatrix[this.y][this.x] = null;
+            matrix[this.y][this.x] = 0;
+            for (var i in predatorArr) {
+                if (predatorArr[i].x == this.x && predatorArr[i].y == this.y) {
+                    predatorArr.splice(i, 1);
+                }
+            }
         }
     }
 

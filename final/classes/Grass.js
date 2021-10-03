@@ -1,23 +1,17 @@
-let parent = require('./LivingCreature');
+let LivingCreature = require('./LivingCreature');
 
-module.exports = class Grass extends parent{
+module.exports = class Grass extends LivingCreature {
 
     multiplyFunction() {
         this.multiply++;
-        let targetCells = this.chooseCells(0);
+        let targetCells = super.chooseCells(0);
         let newCell = targetCells[Math.floor(Math.random() * targetCells.length)];
         if (this.multiply >= 2 && newCell) {
-            let newX = newCell[0];
-            let newY = newCell[1];
-            this.matrix[newY][newX] = this.id;
-            let newGrass = new Grass(newX, newY, this.index, this.matrix, this.objectsMatrix);
-            this.objectsMatrix[newY][newX] = newGrass;
+            let x = newCell[0];
+            let y = newCell[1];
+            matrix[y][x] = 1;
+            grassArr.push(new Grass(x, y, 1));
             this.multiply = 0;
         }
     }
-
-    update() {
-        this.multiply();
-    }
-
 }

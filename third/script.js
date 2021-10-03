@@ -1,6 +1,6 @@
 var socket = io();
 
-var side = 10;
+var side = 15;
 function setup() {
     createCanvas(50 * side, 50 * side);
     background("pink");
@@ -14,19 +14,19 @@ function nkarel(matrix) {
     for (var y = 0; y < matrix.length; y++) {
         for (var x = 0; x < matrix[0].length; x++) {
             var obj = matrix[y][x];
-            if (obj == 1){
-                if(weath == "summer") {
-                fill("green");
-            }else if (weath == "autumn") {
-                fill("#333300");
-            }else if (weath == "winter") {
-                fill("white");
-            }else if (weath == "spring") {
-                fill("#4dffa6");
-            }
-        }else if (obj == 2) {
+            if (obj == 1) {
+                if (weath == "summer") {
+                    fill("green");
+                } else if (weath == "autumn") {
+                    fill("#333300");
+                } else if (weath == "winter") {
+                    fill("white");
+                } else if (weath == "spring") {
+                    fill("#4dffa6");
+                }
+            } else if (obj == 2) {
                 fill("yellow");
-            }else if (obj == 0){
+            } else if (obj == 0) {
                 fill("grey")
             }
             rect(x * side, y * side, side, side);
@@ -34,8 +34,8 @@ function nkarel(matrix) {
     }
 }
 
-        socket.on('send matrix', nkarel)
- 
+socket.on('send matrix', nkarel)
+
 
 
 function kill() {

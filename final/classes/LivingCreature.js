@@ -1,10 +1,8 @@
 module.exports = class LivingCreature {
-    constructor(x, y, index, matrix, objectsMatrix) {
+	constructor(x, y, index) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
-		this.matrix = matrix;
-        this.objectsMatrix = objectsMatrix;
 		this.multiply = 0;
 		this.directions = [
 			[this.x - 1, this.y - 1],
@@ -15,9 +13,22 @@ module.exports = class LivingCreature {
 			[this.x - 1, this.y + 1],
 			[this.x, this.y + 1],
 			[this.x + 1, this.y + 1]
-		]; 
+		];
 	}
-	
+
+	updateCoordinates() {
+		this.directions = [
+			[this.x - 1, this.y - 1],
+			[this.x, this.y - 1],
+			[this.x + 1, this.y - 1],
+			[this.x - 1, this.y],
+			[this.x + 1, this.y],
+			[this.x - 1, this.y + 1],
+			[this.x, this.y + 1],
+			[this.x + 1, this.y + 1]
+		];
+	}
+
 	chooseCells(characterId) {
 		var found = [];
 		for (var i in this.directions) {
