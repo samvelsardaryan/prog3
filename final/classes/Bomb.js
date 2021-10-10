@@ -1,43 +1,12 @@
-class Bomb {
+let LivingCreature = require('./LivingCreature');
+var random = require("./random");
 
-    constructor(x, y, id, matrix, objectsMatrix) {
-        this.x = x;
-        this.y = y;
-        this.id = id;
-        this.matrix = matrix;
-        this.objectsMatrix = objectsMatrix;
-        this.directions = [
-            [this.x - 1, this.y - 1],
-            [this.x, this.y - 1],
-            [this.x + 1, this.y - 1],
-            [this.x - 1, this.y],
-			[this.x, this.y],
-            [this.x + 1, this.y],
-            [this.x - 1, this.y + 1],
-            [this.x, this.y + 1],
-            [this.x + 1, this.y + 1]
-        ];
-    }
+module.exports = class Bomb extends LivingCreature {
 
-    chooseCells(characterId) {
-        let found = [];
-        for (let i = 0; i < this.directions.length; i++) {
-            let coordinates = this.directions[i];
-            let x = coordinates[0];
-            let y = coordinates[1];
-            if (x >= 0 && x < this.matrix[0].length && y >= 0 && y < this.matrix.length) {
-                if (this.matrix[y][x] == characterId) {
-                    found.push(coordinates);
-                }
-            }
-        }
-        return found;
-    }
-
-	explode(){
-		let Cells = this.chooseCells(2);
-		let Cells1 = this.chooseCells(3);
-		let Cells2 = this.chooseCells(5);
+    explode() {
+        let Cells = super.chooseCells(2);
+		let Cells1 = super.chooseCells(3);
+		let Cells2 = super.chooseCells(4);
 		let targetCells = Cells.concat(Cells1.concat(Cells2));
         let newCell = random(targetCells);
 		if(newCell){
@@ -45,16 +14,19 @@ class Bomb {
 				let coordinates = this.directions[i];
 				let x = coordinates[0];
 				let y = coordinates[1];
-				if (x >= 0 && x < this.matrix[0].length && y >= 0 && y < this.matrix.length) {
-					this.matrix[y][x] = 0;
-					this.objectsMatrix[y][x] = null;
+				if (x >= 0 && x < matrix[0].length && y >= 0 && y < matrix.length) {
+					matrix[y][x] = 0;
 				}
 			}
+            this.die();
 		}
-	}
-    
-    update() {
-        this.explode();
     }
-
+    die() {     
+        matrix[this.y][this.x] = 0;
+        for (var i in bombArr) {
+            if (bombArr[i].x == this.x && bombArr[i].y == this.y) {
+                bombArr.splice(i, 1);
+            }
+        }
+    }
 }
